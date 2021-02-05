@@ -269,6 +269,7 @@ endmacro()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+set(CMAKE_CXX_STANDARD 17)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_flag_if_supported(-Wunused-but-set-variable UNUSED_BUT_SET)
@@ -373,6 +374,9 @@ find_package(Qt${Qt_VERSION_MAJOR} NO_MODULE QUIET OPTIONAL_COMPONENTS
   Widgets
   WaylandCompositor
 )
+if (TARGET Qt6::Core)
+ add_definitions(-DGAMMARAY_QT6_TODO)
+endif ()
 
 # Find these 'exotic' Qt modules without using find_package(... COMPONENTS)
 # so we can retrieve those packages even when installed into a different prefix
