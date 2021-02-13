@@ -47,9 +47,11 @@ jobs:
 
     - name: Build
       working-directory: ${{github.workspace}}/build
-      shell: bash
+      shell: cmd
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --target install
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        cmake --build . --target install
     - uses: actions/upload-artifact@v2
       with:
         name: my-artifact
