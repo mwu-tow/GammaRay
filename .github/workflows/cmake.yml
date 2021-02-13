@@ -7,7 +7,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build:
+  build:^
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
@@ -17,6 +17,7 @@ jobs:
     steps:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
+    - uses: seanmiddleditch/gha-setup-ninja@master
       
     - uses: actions/checkout@v2
 
@@ -33,10 +34,14 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/out -G Ninja
 
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE
+      run: cmake --build . --config $BUILD_TYPE --target install
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: ${{github.workspace}}/out
