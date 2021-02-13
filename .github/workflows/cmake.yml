@@ -26,6 +26,10 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{github.workspace}}/build
 
+    - name: Experiment
+      working-directory: ${{github.workspace}}/build
+      run: ninja --version
+
     - name: Configure CMake
       working-directory: ${{github.workspace}}/build
       # Note the current convention is to use the -S and -B options here to specify source 
